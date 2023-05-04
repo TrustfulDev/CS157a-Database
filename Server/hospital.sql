@@ -1,0 +1,8 @@
+-- SQL CODE GOES HERE!!!! DELETE THE TEST CODE BELOW
+CREATE TABLE SOME_TABLE
+(
+    textvalue VARCHAR(50),
+    numValue INT
+);
+
+INSERT INTO SOME_TABLE (textvalue, numValue) VALUES ("Hello", 2);
