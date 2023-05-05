@@ -3,6 +3,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem 8rem;
+    position: relative;
+    background-color: var(--black);
+    z-index: 1000;
 }
 
 .nav-container h1 {
@@ -29,8 +32,106 @@
     background-color: var(--light-grey);
 }
 
-@media screen and (max-width: 1030px) {
+.hamburger {
+    display: none;
+    cursor: pointer;
+    margin-right: 5px;
+    z-index: 100;
+}
+
+.ham-lines {
+    height: 2px;
+    width: 21px;
+    background-color: white;
+    transition: all 150ms ease-in-out;
+}
+
+.first-line {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.sec-line {
+    opacity: 0;
+}
+
+.third-line {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+@media screen and (max-width: 1100px) {
     .nav-container {
         padding: 1rem 2rem;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .nav-container nav {
+        position: absolute;
+        flex-direction: column;
+        top: -400%;
+        left: 0;
+        width: 100%;
+        padding: 1rem;
+        background-color: var(--black);
+        border-bottom: 1px solid var(--light-yellow);
+        z-index: -1;
+    }
+
+    .nav-open {
+        animation: slide-down 300ms ease-in-out forwards !important;
+    }
+
+    .nav-close {
+        animation: slide-up 300ms ease-in-out forwards !important;
+    }
+
+    .hamburger {
+        display: block;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .nav-container {
+        padding: 1rem 1.5rem;
+    }
+
+    .nav-container h1 {
+        font-size: 1.75rem;
+    }
+}
+
+@keyframes slide-down {
+    0% {
+        top: -400%;
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 0.25;
+    }
+
+    100% {
+        top: 3.5rem;
+        opacity: 1;
+    }
+}
+
+@keyframes slide-up {
+    0% {
+        top: 3.5rem;
+        opacity: 1;
+    }
+
+    25% {
+        opacity: 0.25;
+    }
+
+    100% {
+
+        top: -400%;
+        opacity: 0;
     }
 }
