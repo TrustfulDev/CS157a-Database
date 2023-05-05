@@ -9,3 +9,4 @@ A UI for our 157A Database project using vite + React & node.js + express
 ## Packages
 - axios
 - react-router-dom
+- framer-motion

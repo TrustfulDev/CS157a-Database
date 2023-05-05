@@ -37,6 +37,11 @@ a {
   color: white;
 }
 
+img {
+  max-width: 100%;
+  display: block;
+}
+
 /* Optional */
 @media (prefers-color-scheme: light) {
   :root {
