@@ -2,6 +2,12 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
+import { Navbar } from './components';
+
+// Import Routing and Pages
+import { Routes, Route } from 'react-router-dom';
+import { Home } from './pages';
+
 function App() {
   // Variable for the api data
   const [data, setData] = useState([{}]);
@@ -18,7 +24,11 @@ function App() {
   // Below is straight up just simple html
   return (
     <div>
-      {(
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Home />} />
+      </Routes>
+      {/* {(
         typeof data === 'undefined' ? (
           <p>Loading...</p>
         ) : (
@@ -29,7 +39,7 @@ function App() {
             </div>
           ))
         )
-      )}
+      )} */}
     </div>
   )
 }
