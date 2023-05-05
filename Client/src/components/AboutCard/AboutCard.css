@@ -1,0 +1,57 @@
+.about-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    min-width: 325.35px;
+}
+
+.about-card hr {
+    width: 100%;
+    margin-top: 1.5rem;
+    height: 1px;
+    border: none;
+    background-color: var(--light-yellow);
+}
+
+.about-card-pic {
+    position: relative;
+    max-width: 15rem;
+    height: 310px;
+    display: grid;
+    align-items: end;
+    border-radius: 0 0 100vw 100vw;
+
+    overflow: hidden;
+}
+
+.about-card-circle {
+    position: absolute;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    inset: auto 0 0;
+    margin-inline: auto;
+
+    border-radius: 50%;
+    background-color: var(--light-yellow);
+}
+
+.about-card-pic img {
+    position: relative;
+    left: 1rem;
+    object-fit: cover;
+    scale: 1.2;
+
+    z-index: 2;
+    transition: all 150ms ease-in-out;
+}
+
+.about-card-info {
+    padding: 1rem 2rem;
+}
+
+.about-card:hover .about-card-pic img {
+    transform: translateY(-15px);
+    scale: 1.3; 
+}

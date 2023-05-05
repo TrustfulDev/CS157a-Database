@@ -1,0 +1,91 @@
+.home-container {
+    height: calc(100vh - 12rem);
+    padding: 0 1rem;
+}
+
+.home-search-bar {
+    background-color: #1E1E1E;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg fill-opacity='0.5'%3E%3Cpolygon fill='%23374b39' points='1600 160 0 460 0 350 1600 50'/%3E%3Cpolygon fill='%234f7855' points='1600 260 0 560 0 450 1600 150'/%3E%3Cpolygon fill='%2368a570' points='1600 360 0 660 0 550 1600 250'/%3E%3Cpolygon fill='%2380d28c' points='1600 460 0 760 0 650 1600 350'/%3E%3Cpolygon fill='%2399FFA7' points='1600 800 0 800 0 750 1600 450'/%3E%3C/g%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: cover;
+
+    padding: 1rem;
+    border-radius: 6px;
+    height: calc(100% - 2rem);
+    min-height: 410px;
+
+    position: relative;
+}
+
+.home-search-bar h3 {
+    font-size: 1.5rem;
+}
+
+.home-search-bar h1 {
+    font-size: 3rem;
+}
+
+.home-search-bar ol {
+    margin-left: 2rem;
+    margin-top: 0.5rem;
+    line-height: 1.5;
+}
+
+.home-hint {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+}
+
+.home-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding: 1rem;
+
+    /* background-color: var(--light-grey); */
+    border-radius: 6px;
+    height: 15%;
+}
+
+.home-form label {
+    border-radius: 6px;
+    background-color: var(--dark-grey);
+    padding: 1rem 2rem;
+    min-width: 181px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.home-form input {
+    display: none;
+}
+
+.home-form button {
+    /* border: 1px solid var(--sky-blue); */
+    border: none;
+    background-color: var(--light-grey);
+    padding: 1rem 2rem;
+    border-radius: 6px;
+    flex: 1;
+}
+
+@media screen and (max-width: 500px) {
+    .home-search-bar h3 {
+        font-size: 1rem;
+    }
+
+    .home-search-bar h1 {
+        font-size: 1.75rem;
+    }
+}

@@ -4,15 +4,30 @@ import './Navbar.css';
 
 const Navbar = () => {
     const [open, setOpen] = useState(false);
-
+    const [selected, setSelected] = useState(1);
+ 
     return (
         <header className="nav-container">
-            <h1>Syntax Savants</h1>
+            <Link to="/" onClick={() => setSelected(1)}><h1>Syntax Savants</h1></Link>
 
             <nav className={ open ? "nav-open" : "nav-close"}>
-                <Link to="/" className="nav-btns">Something</Link>
-                <Link to="/" className="nav-btns">Something</Link>
-                <Link to="/" className="nav-btns">About Us</Link>
+                <Link to="/" className={ selected === 1 ? "nav-btns nav-selected" : "nav-btns"}
+                    onClick={() => setSelected(1)}
+                >
+                    Home
+                </Link>
+
+                <Link to="/" className={ selected === 2 ? "nav-btns nav-selected" : "nav-btns"}
+                    onClick={() => setSelected(2)}
+                >
+                    Something
+                </Link>
+
+                <Link to="/about" className={ selected === 3 ? "nav-btns nav-selected" : "nav-btns"}
+                    onClick={() => setSelected(3)}
+                >
+                    About Us
+                </Link>
             </nav>
 
             <div className="hamburger" onClick={() => setOpen(!open)}>

@@ -25,11 +25,27 @@
     border-radius: 6px;
     position: relative;
     transition: all 150ms ease-in-out;
+    min-width: 148px;
+    text-align: center;
+
+    position: relative;
 }
 
 .nav-btns:hover {
     color: var(--light-yellow);
     background-color: var(--light-grey);
+}
+
+.nav-selected::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    height: 2px;
+    width: 3rem;
+    background-color: var(--light-green);
 }
 
 .hamburger {

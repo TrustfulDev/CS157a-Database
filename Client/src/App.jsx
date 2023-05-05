@@ -6,7 +6,7 @@ import { Navbar } from './components';
 
 // Import Routing and Pages
 import { Routes, Route } from 'react-router-dom';
-import { Home } from './pages';
+import { Home, About } from './pages';
 
 function App() {
   // Variable for the api data
@@ -27,6 +27,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/about' element={<About />} />
       </Routes>
       {/* {(
         typeof data === 'undefined' ? (
