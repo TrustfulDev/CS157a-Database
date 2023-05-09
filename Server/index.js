@@ -11,8 +11,9 @@ async function getData() {
 
 // Check App.jsx line 9 to see the GET request
 app.get("/api", async (req, res) => {
-    const result = await getData();
-    res.send(result);
+    // const result = await getData();
+    // res.send(result);
+    res.send("HELLO");
 });
 
 app.listen(PORT, () => {console.log(`Server started on port ${PORT}`)});
