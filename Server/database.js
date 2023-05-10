@@ -9,10 +9,10 @@ dotenv.config();
 *  Good practice to put all the values in the env file
 */
 const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: process.env.DB_PASSWORD,
-    database: "test_db",
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_DATABASE,
 }).promise();
 
 export default db;
