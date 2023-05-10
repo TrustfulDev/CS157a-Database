@@ -8,7 +8,7 @@ dotenv.config();
 *  Use the Database URL given by the hosting service (HEROKU)
 *  Good practice to put all the values in the env file
 */
-const db = mysql.createConnection({
+const db = mysql.createPool({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASS,

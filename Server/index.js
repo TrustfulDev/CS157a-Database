@@ -2,12 +2,15 @@ import express from 'express';
 import db from './database.js';
 
 const app = express();
-const PORT =5000;
 
 async function getData() {
     const [rows] = await db.query("SELECT * FROM SOME_TABLE");
     return rows;
 }
+
+app.get("/", async (req, res) => {
+    res.send("Server is running!");
+});
 
 // Check App.jsx line 9 to see the GET request
 app.get("/api", async (req, res) => {
@@ -16,4 +19,4 @@ app.get("/api", async (req, res) => {
     res.send([{ "name" : "test" }]);
 });
 
-app.listen(process.env.PORT || PORT, () => {console.log(`Server started on port ${PORT}`)});
+app.listen(process.env.PORT || 3000, () => {console.log(`Server started on port ${process.env.PORT}`)});

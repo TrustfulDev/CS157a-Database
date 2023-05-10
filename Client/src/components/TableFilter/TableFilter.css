@@ -1,0 +1,39 @@
+.table-filter {
+    border-radius: 6px;
+    background-color: var(--dark-grey);
+    padding: 1rem 2rem;
+    min-width: 181px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    transition: all 150ms ease-out;
+    cursor: pointer;
+}
+
+.table-filter:hover {
+    background-color: var(--light-grey);
+}
+
+.table-filter input {
+    display: none;
+}
+
+.table-filter-selected {
+    color: var(--light-green);
+}
+
+.table-filter-selected::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    height: 2px;
+    width: 3rem;
+    background-color: var(--light-green);
+    animation: open-select 150ms ease-out;
+}
