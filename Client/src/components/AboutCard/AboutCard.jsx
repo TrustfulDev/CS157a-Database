@@ -2,9 +2,9 @@
 import { motion } from 'framer-motion';
 import './AboutCard.css';
 
-const AboutCard = ({pic, name, desc, anim}) => {
+const AboutCard = ({pic, name, desc, anim, link}) => {
     return (
-        <motion.div className="about-card" variants={ anim }>
+        <motion.a href={link} className="about-card" variants={ anim } target="_blank" rel="noopener noreferrer">
             <div className="about-card-pic">
                 <div className="about-card-circle"></div>
                 <img src={pic} alt={`${name}'s picture`} />
@@ -16,7 +16,7 @@ const AboutCard = ({pic, name, desc, anim}) => {
                 <h1>{name}</h1>
                 <p>{desc}</p>
             </div>
-        </motion.div>
+        </motion.a>
     );
 };
 
