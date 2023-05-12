@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { TableFilter } from "../../components";
+import { TableFilter, Table } from "../../components";
 import './Home.css';
 
 const Home = () => {
@@ -35,12 +35,14 @@ const Home = () => {
             .then(response => setData(response.data))
             .catch(err => console.log(err));
             setSearch(true);
+
+            setTimeout(() => {
+                formRef.current.scrollIntoView();
+            }, 150);
         }
     }
 
-    useEffect(() => {
-        if (valid === true) window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
-    }, [valid])
+    const formRef = useRef(null);
 
     return (
         <>
@@ -68,7 +70,7 @@ const Home = () => {
                     </motion.div>
                 </motion.section>
 
-                <form className="home-form" onSubmit={handleSubmit}>
+                <form ref={formRef} className="home-form" onSubmit={handleSubmit}>
                     <TableFilter text="Patients" id="Patients" value="Patients" handleCheck={handleCheck} />
                     
                     <TableFilter text="Medical Staff" id="MedicalStaff" value="MedicalStaff" handleCheck={handleCheck} />
@@ -103,11 +105,7 @@ const Home = () => {
                     typeof data === 'undefined' ? (
                         <p>Loading...</p>
                     ) : (
-                        data.map((element, i) => (
-                            <div key={i}>
-                                <p>{element.name}</p>
-                            </div>
-                        ))
+                        <Table title="Test" data={data} />
                     )
                 )}
             </div>

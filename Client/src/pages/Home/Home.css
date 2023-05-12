@@ -107,12 +107,12 @@
 
 /* Search CSS */
 .search-container {
-    padding: 0 1rem;
+    padding: 1rem 2rem;
     min-height: calc(100vh - 124px);
     
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: 3rem;
 }
 
 @media screen and (max-width: 500px) {
