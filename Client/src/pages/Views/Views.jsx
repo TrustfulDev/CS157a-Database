@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from "axios";
 import { Table } from "../../components";
+import { motion } from "framer-motion";
 import './Views.css';
 
 const Views = () => {
@@ -18,30 +19,40 @@ const Views = () => {
         setSelected(val);
     }
 
-    console.log(data);
+    const appearDown = {
+        initial: { y: "-2rem", opacity: 0 },
+        animate: {
+            y: 0,
+            opacity: 1,
+            transition: { staggerChildren: 0.2, ease: "easeInOut", duration: 0.75 },
+        },
+    }
 
     return (
         <div className="views-container">
             <hr/>
-            <div className="views-btn-div">
-                <button className={ selected === 1 ? "views-btns views-selected" : "views-btns"}
+            <motion.div className="views-btn-div" variants={ appearDown } initial="initial" animate="animate">
+                <motion.button className={ selected === 1 ? "views-btns views-selected" : "views-btns"}
                     onClick={() => handleClick("patient", 1)}
+                    anim={ appearDown }
                 >
                     Prescription Medicine View
                 
-                </button>
-                <button className={ selected === 2 ? "views-btns views-selected" : "views-btns"}
+                </motion.button>
+                <motion.button className={ selected === 2 ? "views-btns views-selected" : "views-btns"}
                     onClick={() => handleClick("staff", 2)}
+                    anim={ appearDown }
                 >
                     Ward Equipment View
-                </button>
+                </motion.button>
                 
-                <button className={ selected === 3 ? "views-btns views-selected" : "views-btns"}
+                <motion.button className={ selected === 3 ? "views-btns views-selected" : "views-btns"}
                     onClick={() => handleClick("equipment", 3)}
+                    anim={ appearDown }
                 >
                     Staff Patients View
-                </button>
-            </div>
+                </motion.button>
+            </motion.div>
             <div className="view-info">
                 {(
                     typeof data === 'undefined' ? (

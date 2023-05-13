@@ -4,7 +4,6 @@ import './Table.css';
 const Table = ({ data }) => {
     var values = Object.values(data);
     var keys = Object.keys(values[0]);
-    console.log(values);
 
     return (
         <div className="table-overflow">

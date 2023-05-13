@@ -80,7 +80,7 @@ const Home = () => {
                     <ol>
                         <li>Select the tables/entities you would like to query</li>
                         <li>Click on Fetch Data to begin the query</li>
-                        <li>You can check out our views in the second page</li>
+                        <li>Patients & Prescription will query two tables each</li>
                     </ol>
 
                     <motion.div className="home-hint"
@@ -128,7 +128,7 @@ const Home = () => {
                         <p>Fetching your data...</p>
                     ) : (
                         data.map((table, index) => { 
-                            console.log(table);
+                            // console.log(table);
                             return (
                                 <Table data={table} key={index} />
                             )
