@@ -1,7 +1,7 @@
 .table-filter {
     border-radius: 6px;
     background-color: var(--dark-grey);
-    padding: 1rem 2rem;
+    padding: 2rem;
     min-width: 181px;
 
     display: flex;

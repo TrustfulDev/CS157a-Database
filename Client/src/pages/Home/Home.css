@@ -2,7 +2,7 @@
 .home-container {
     padding: 0 1rem;
     position: relative;
-    height: calc(100vh - 87px);
+    min-height: calc(100vh - 202px);
 }
 
 .home-hero {
@@ -13,8 +13,7 @@
 
     padding: 1rem;
     border-radius: 6px;
-    height: 85%;
-    min-height: 410px;
+    min-height: inherit;
 
     position: relative;
     overflow: hidden;

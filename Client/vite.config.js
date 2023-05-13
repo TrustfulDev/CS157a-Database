@@ -5,8 +5,16 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
+    
     proxy: {
-      "/api": "https://cs157a-hospital.herokuapp.com",
-    },
+      "/api": {
+        target: "https://cs157a-hospital.herokuapp.com",
+        changeOrigin: true,
+      },
+      "/view": {
+        target: "https://cs157a-hospital.herokuapp.com",
+        changeOrigin: true,
+      },
+    }
   }
 })

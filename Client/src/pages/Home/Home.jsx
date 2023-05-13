@@ -7,7 +7,7 @@ import './Home.css';
 const Home = () => {
     const [valid, setValid] = useState(true);
     const [search, setSearch] = useState(false);
-    const [data, setData] = useState([{}]);
+    const [data, setData] = useState([]);
 
     const [state, setState] = useState({
         "Patients": false,
@@ -24,18 +24,40 @@ const Home = () => {
         setState((prevValues) => ({...prevValues, [e]: isSelected}));
     }
 
+    const getData = (tableName) => {
+        axios.get(`/api/${tableName}`)
+        .then(response => {
+            setData(prevData => [...prevData, response.data]);
+        })
+        .catch(err => console.log(err));
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setData([]);
         if (Object.values(state).indexOf(true) <= -1) {
             setValid(false);
             setSearch(false);
         } else {
             setValid(true);
-            axios.get("/api")
-            .then(response => setData(response.data))
-            .catch(err => console.log(err));
-            setSearch(true);
 
+            if (state.Patients === true) {
+                getData("patient");
+                getData("condition");
+            }
+            state.MedicalStaff ? getData("staff") : "";
+            state.HospitalWard ? getData("ward") : "";
+            state.MedicalEquipment ? getData("equipment") : "";
+            if (state.Prescription === true) {
+                getData("prescription");
+                getData("prescribed");
+            }
+            state.Medicine ? getData("medicine") : "";
+            state.Pharmacy ? getData("pharmacy") : "";
+            state.MedicineInventory ? getData("inventory") : "";
+
+            setSearch(true);
+            
             setTimeout(() => {
                 formRef.current.scrollIntoView();
             }, 150);
@@ -58,7 +80,7 @@ const Home = () => {
                     <ol>
                         <li>Select the tables/entities you would like to query</li>
                         <li>Click on Fetch Data to begin the query</li>
-                        <li>Narrow down your search with specfic queries</li>
+                        <li>You can check out our views in the second page</li>
                     </ol>
 
                     <motion.div className="home-hint"
@@ -102,10 +124,16 @@ const Home = () => {
             
             <div className={ search ? "search-container" : "fetch-valid"}>
                 {(
-                    typeof data === 'undefined' ? (
-                        <p>Loading...</p>
+                    typeof data === 'undefined' || data.length === 0 ? (
+                        <p>Fetching your data...</p>
                     ) : (
-                        <Table title="Test" data={data} />
+                        data.map((table, index) => { 
+                            console.log(table);
+                            return (
+                                <Table data={table} key={index} />
+                            )
+                        })
+                        // <Table title="Test" data={val} key={key} />
                     )
                 )}
             </div>

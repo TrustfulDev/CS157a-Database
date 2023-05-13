@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 import './Table.css';
 
-const Table = ({ title, data }) => {
+const Table = ({ data }) => {
     var values = Object.values(data);
     var keys = Object.keys(values[0]);
+    console.log(values);
 
     return (
-        <div>
-            <h1 className="table-header">{title}</h1>
+        <div className="table-overflow">
             <table className="table-container">
                 <thead>
                     <tr>
