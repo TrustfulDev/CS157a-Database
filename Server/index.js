@@ -1,8 +1,13 @@
 import express from 'express';
 import apiRouter from "./routes/api.js";
 import viewRouter from "./routes/views.js";
+import cors from 'cors';
 
 const app = express();
+
+app.use(cors({
+    origin: "https://cs-157a-database-g5p0xdwm5-trustfuldev.vercel.app/",
+}));
 
 app.use("/api", apiRouter);
 app.use("/view", viewRouter);
