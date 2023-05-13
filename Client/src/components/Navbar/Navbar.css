@@ -32,8 +32,11 @@
 }
 
 .nav-btns:hover {
-    color: var(--light-yellow);
     background-color: var(--light-grey);
+}
+
+.nav-selected {
+    color: var(--light-green);
 }
 
 .nav-selected::after {
@@ -46,6 +49,7 @@
     height: 2px;
     width: 3rem;
     background-color: var(--light-green);
+    animation: open-select 150ms ease-out;
 }
 
 .hamburger {
@@ -149,5 +153,15 @@
 
         top: -400%;
         opacity: 0;
+    }
+}
+
+@keyframes open-select {
+    0% {
+        width: 0px;
+    }
+
+    100% {
+        width: 3rem;
     }
 }

@@ -1,18 +1,20 @@
--- SQL CODE GOES HERE!!!! DELETE THE TEST CODE BELOW
+-- ALL TRIGGERS do not work for heroku & cleardb sadly. It requires us to pay. It will work everywhere else.
 CREATE TABLE HOSPITAL_WARD (
     Ward_ID INT PRIMARY KEY NOT NULL,
     Ward_Type VARCHAR(255),
     Current_Patients INT,
-    Max_Patients INT
+    Max_Patients INT,
+	Current_Staff INT,
+    CHECK (Current_Staff > 0)
 );
 
-INSERT INTO HOSPITAL_WARD (Ward_ID, Ward_Type, Current_Patients, Max_Patients)
+INSERT INTO HOSPITAL_WARD (Ward_ID, Ward_Type, Current_Patients, Max_Patients,Current_Staff)
 VALUES 
-(201, 'Cardiology', 12, 20),
-(202, 'Neurology', 8, 10), 
-(203, 'Oncology', 16, 20),
-(204, 'Orthopedics', 6, 10),
-(205, 'Pediatrics', 20, 25);
+(201, 'Cardiology', 0, 20,1),
+(202, 'Neurology', 0, 10,1), 
+(203, 'Oncology', 0, 20,1),
+(204, 'Orthopedics', 0, 10,1),
+(205, 'Pediatrics', 0, 25,1);
 
 CREATE TABLE MEDICAL_EQUIPMENT (
     Equipment_ID INT PRIMARY KEY NOT NULL,
@@ -84,14 +86,46 @@ VALUES
     FOREIGN KEY (Pharmacy_ID) REFERENCES PHARMACY (Pharmacy_ID)
 );
 
+DELIMITER $$
+CREATE TRIGGER update_ward_staff_count_remove
+AFTER DELETE ON MEDICAL_STAFF
+FOR EACH ROW
+BEGIN
+    UPDATE HOSPITAL_WARD
+    SET Current_Staff = (SELECT COUNT(*) FROM MEDICAL_STAFF WHERE Ward_ID = NEW.Ward_ID)
+    WHERE Ward_ID = NEW.Ward_ID;
+END;
+$$
+
+DELIMITER $$
+CREATE TRIGGER update_ward_staff_count_insert
+AFTER INSERT ON MEDICAL_STAFF
+FOR EACH ROW
+BEGIN
+    UPDATE HOSPITAL_WARD
+    SET Current_Staff = (SELECT COUNT(*) FROM MEDICAL_STAFF WHERE Ward_ID = NEW.Ward_ID)
+    WHERE Ward_ID = NEW.Ward_ID;
+END;
+$$
+
+DELIMITER $$
+CREATE TRIGGER update_ward_staff_count_
+AFTER UPDATE ON MEDICAL_STAFF
+FOR EACH ROW
+BEGIN
+    UPDATE HOSPITAL_WARD
+    SET Current_Staff = (SELECT COUNT(*) FROM MEDICAL_STAFF WHERE Ward_ID = NEW.Ward_ID)
+    WHERE Ward_ID = NEW.Ward_ID;
+END;
+$$
 
 INSERT INTO MEDICAL_STAFF (Staff_ID, Name, Occupation, Specialization, Ward_ID, Pharmacy_ID)
 VALUES 
 (101, 'Jacob Aguero ', 'Surgeon', 'Neurosurgery', 201, 701),
-(102, 'Jane Smith', 'Doctor', 'Pediatric Nursing', 201, 701),
-(103, 'Bob Johnson', 'Physician', 'Cardiology', 202, 703),
+(102, 'Jane Smith', 'Doctor', 'Pediatric Nursing', 202, 701),
+(103, 'Bob Johnson', 'Physician', 'Cardiology', 203, 703),
 (104, 'Amy Lee', 'Surgeon', 'Orthopedic Surgery', 204, 702),
-(105, 'Mark Wilson', 'Physician', 'Gastroenterology', 201, 701);
+(105, 'Mark Wilson', 'Physician', 'Gastroenterology', 205, 701);
 
 CREATE TABLE PATIENT (    
 Patient_ID INT PRIMARY KEY,
@@ -99,7 +133,6 @@ Patient_ID INT PRIMARY KEY,
     Insurance VARCHAR(255),
     Staff_ID INT,
     Emergency_Contact VARCHAR(255),
-    Medical_Condition VARCHAR(255),
     Admission_Reason VARCHAR(255),
     Admission_Date DATE,
     Discharge_Date DATE,
@@ -111,14 +144,88 @@ Patient_ID INT PRIMARY KEY,
     CHECK (Discharge_Date >= Admission_Date)
 );
 
-INSERT INTO PATIENT (Patient_ID, Name, Insurance, Staff_ID, Emergency_Contact, Medical_Condition, Admission_Reason, Admission_Date, Discharge_Date, Discharge_Diagnosis, Ward_ID, Patient_Status)
-VALUES 
-(1, 'John Smith', 'Blue Cross', 101, 'Jane Doe', 'None', 'Chest pain', '2023-01-01',NULL, NULL, 201, 'Active'),
-(2, 'Jane Doe', 'Aetna', 102, 'John Smith', 'Asthma', 'Shortness of breath', '2023-02-05', '2023-02-10', 'Bronchitis', 201, 'Inactive'),
-(3, 'Mary Jones', 'Cigna', 103, 'Joe Johnson', 'Diabetes', 'High blood sugar', '2023-03-15', '2023-03-21', 'Type 2 diabetes', 201, 'Inactive'),
-(4, 'Joe Johnson', 'Humana', 104, 'Mary Jones', 'High blood pressure', 'Headache', '2023-04-01', NULL, NULL, 202, 'Active'),
-(5, 'Emily Brown', 'United Healthcare', 101, 'David Lee', 'None', 'Routine checkup', '2023-05-01', NULL, NULL, 204, 'Inactive');
+DELIMITER $$
+CREATE TRIGGER chk_staff_id_count
+BEFORE INSERT ON PATIENT
+FOR EACH ROW
+BEGIN
+    SELECT RAISE(ABORT, 'Cannot insert more than 1000 records with the same Staff_ID')
+    WHERE (SELECT COUNT(*) FROM PATIENT WHERE Staff_ID = NEW.Staff_ID) >= 1000;
+END;	
+$$
 
+DELIMITER $$
+CREATE TRIGGER chk_ward_id_count
+BEFORE UPDATE ON PATIENT
+FOR EACH ROW
+BEGIN
+    SELECT RAISE(ABORT, 'Cannot insert more than active patients with the same ward max capacity')
+    WHERE (SELECT COUNT(*) FROM PATIENT WHERE Ward_ID = NEW.Ward_ID AND Patient_Status = 'Active') >
+	(SELECT Max_Patients FROM HOSPITAL_WARD WHERE Ward_ID = NEW.Ward_ID);
+END;
+$$
+
+DELIMITER $$
+CREATE TRIGGER chk_ward_id_count_insert
+BEFORE INSERT ON PATIENT
+FOR EACH ROW
+BEGIN
+    SELECT RAISE(ABORT, 'Cannot insert more than active patients with the same ward max capacity')
+    WHERE (SELECT COUNT(*) FROM PATIENT WHERE Ward_ID = NEW.Ward_ID AND Patient_Status = 'Active') >
+	(SELECT Max_Patients FROM HOSPITAL_WARD WHERE Ward_ID = NEW.Ward_ID);
+END;
+$$
+
+DELIMITER $$
+CREATE TRIGGER update_ward_patient_count_insert
+AFTER INSERT ON PATIENT
+FOR EACH ROW
+BEGIN
+    UPDATE HOSPITAL_WARD
+    SET Current_Patients = (SELECT COUNT(*) FROM PATIENT WHERE Ward_ID = NEW.Ward_ID AND Patient_Status = 'Active')
+    WHERE Ward_ID = NEW.Ward_ID;
+END;
+$$
+
+DELIMITER $$
+CREATE TRIGGER update_ward_patient_count
+AFTER UPDATE ON PATIENT
+FOR EACH ROW
+BEGIN
+    UPDATE HOSPITAL_WARD
+    SET Current_Patients = (SELECT COUNT(*) FROM PATIENT WHERE Ward_ID = NEW.Ward_ID AND Patient_Status = 'Active')
+    WHERE Ward_ID = NEW.Ward_ID;
+END;
+$$
+
+DELIMITER $$
+CREATE TRIGGER check_ward_insert
+BEFORE INSERT ON PATIENT
+FOR EACH ROW
+BEGIN
+	SELECT RAISE(ABORT, 'The doctor and patient wards are different')
+	WHERE (SELECT COUNT(*) FROM MEDICAL_STAFF WHERE Staff_ID = NEW.Staff_ID AND Ward_id = NEW.Ward_id = 0);
+END;
+$$
+
+DELIMITER $$
+CREATE TRIGGER check_ward
+BEFORE UPDATE ON PATIENT
+FOR EACH ROW
+BEGIN
+	SELECT RAISE(ABORT, 'The doctor and patient wards are different')
+	WHERE (SELECT COUNT(*) FROM MEDICAL_STAFF WHERE Staff_ID = NEW.Staff_ID AND Ward_id = NEW.Ward_id = 0);
+END;
+$$
+
+INSERT INTO PATIENT (Patient_ID, Name, Insurance, Staff_ID, Emergency_Contact, Admission_Reason, Admission_Date, Discharge_Date, Discharge_Diagnosis, Ward_ID, Patient_Status)
+VALUES 
+(1, 'John Smith', 'Blue Cross', 101, 'Jane Doe', 'Chest pain', '2023-01-01',NULL, NULL, 201, 'Active'),
+(2, 'Jane Doe', 'Aetna', 102, 'John Smith', 'Shortness of breath', '2023-02-05', '2023-02-10', 'Bronchitis', 202, 'Inactive'),
+(3, 'Mary Jones', 'Cigna', 103, 'Joe Johnson', 'High blood sugar', '2023-03-15', '2023-03-21', 'Type 2 diabetes', 203, 'Inactive'),
+(4, 'Joe Johnson', 'Humana', 104, 'Mary Jones', 'Headache', '2023-04-01', NULL, NULL, 204, 'Active'),
+(5, 'Emily Brown', 'United Healthcare', 101, 'David Lee', 'Routine checkup', '2023-05-01', NULL, NULL, 201, 'Active'),
+(6, 'Joe Swanson', 'Humana', 104, 'Mary Jones', 'Headache', '2023-04-01', NULL, NULL, 204, 'Active');
 
 
 CREATE TABLE PRESCRIPTION (
@@ -139,6 +246,41 @@ INSERT INTO PRESCRIPTION (Prescription_Serial_Number, Patient_ID, Staff_ID, Refi
 (404, 4, 102, 4, 704),
 (405, 5, 104, 8, 705);
 
+CREATE TABLE MEDICAL_CONDITION (    
+	Patient_ID INT PRIMARY KEY NOT NULL,
+    Condition_Name VARCHAR(255) NOT NULL,
+    Previous_Admission_Reason VARCHAR(255),
+    Previous_Prescription_ID INT,
+    Diagnosis_Date DATE,
+    Notes VARCHAR(255),
+    FOREIGN KEY (Patient_ID) REFERENCES PATIENT (Patient_ID),
+	FOREIGN KEY (Previous_Prescription_ID) REFERENCES PRESCRIPTION (Prescription_Serial_Number)
+);
+
+DELIMITER $$
+CREATE TRIGGER check_patient_prescription_insert
+BEFORE INSERT ON MEDICAL_CONDITION
+FOR EACH ROW
+BEGIN
+	SELECT RAISE(ABORT, 'Incorrect prescription, does not match with patient')
+	WHERE NEW.Patient_ID != (SELECT Patient_ID FROM Prescription WHERE Prescription_Serial_Number= NEW.Previous_Prescription_ID);
+END;
+$$
+
+DELIMITER $$
+CREATE TRIGGER check_patient_prescription_
+BEFORE UPDATE ON MEDICAL_CONDITION
+FOR EACH ROW
+BEGIN
+	SELECT RAISE(ABORT, 'Incorrect prescription, does not match with patient')
+		WHERE NEW.Patient_ID != (SELECT Patient_ID FROM Prescription WHERE Prescription_Serial_Number= NEW.Previous_Prescription_ID);
+END;
+$$
+
+INSERT INTO MEDICAL_CONDITION (Patient_ID,Condition_Name,Previous_Admission_Reason,Previous_Prescription_ID,Diagnosis_Date,Notes) 
+VALUES
+(1,'Asthma','Breathing Problems',401,'2023-05-01','Chronic coughing and wheezing.'),
+(2,'Lung Inflamation','Breathing Problems',402,'2023-05-01','Shortness of Breath.');
 
 CREATE TABLE PRESCRIBED_MEDICINE (
     Prescription_Serial_Number INT  NOT NULL,
@@ -151,3 +293,34 @@ CREATE TABLE PRESCRIBED_MEDICINE (
 INSERT INTO PRESCRIBED_MEDICINE (Prescription_Serial_Number, Medicine_ID)
 VALUES 
 (401, 602), (402, 603), (404, 604), (404, 605), (405, 601);
+
+CREATE VIEW PRESCRIPTION_VIEW_MEDICINE AS
+SELECT prescriptions.Prescription_Serial_Number, prescriptions.Staff_ID, prescriptions.Patient_ID,
+	   prescriptions.Refills_Left, prescriptions.Pharmacy_ID, premed.Medicine_ID, med.Medicine_Name,
+	   med.Instructions, med.Medicine_Description
+FROM PRESCRIPTION prescriptions
+LEFT JOIN PRESCRIBED_MEDICINE premed
+ON premed.Prescription_Serial_Number = prescriptions.Prescription_Serial_Number
+LEFT JOIN MEDICINE med 
+ON med.Medicine_ID = premed.Medicine_ID;
+
+CREATE VIEW WARD_EQUIPMENT AS
+SELECT ward.Ward_ID, ward.Ward_Type, equip.Equipment_ID, equip.Equipment_Type, equip.Amount
+FROM HOSPITAL_WARD ward
+LEFT JOIN MEDICAL_EQUIPMENT equip
+ON ward.Ward_ID = equip.Ward_ID;
+	
+CREATE VIEW STAFF_PATIENT AS
+SELECT patients.Patient_ID, patients.Name, patients.Insurance, patients.Emergency_Contact,
+	   patients.Admission_Reason, patients.Admission_Date, cond.Condition_Name, cond.Notes
+FROM PATIENT patients
+LEFT JOIN MEDICAL_STAFF staff 
+ON staff.Staff_ID = patients.Patient_ID
+LEFT JOIN MEDICAL_CONDITION cond
+ON cond.Patient_ID = patients.Patient_ID;
+
+SELECT * FROM PRESCRIPTION_VIEW_MEDICINE;
+
+SELECT * FROM WARD_EQUIPMENT;
+
+SELECT * FROM STAFF_PATIENT;

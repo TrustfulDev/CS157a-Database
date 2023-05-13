@@ -1,46 +1,21 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 import './App.css';
 
 import { Navbar } from './components';
 
 // Import Routing and Pages
 import { Routes, Route } from 'react-router-dom';
-import { Home, About } from './pages';
+import { Home, Views, About } from './pages';
 
 function App() {
-  // Variable for the api data
-  const [data, setData] = useState([{}]);
-
-  // useEffect automatically runs the code inside of it on page load
-  useEffect(() => {
-    axios.get("/api")
-      .then(response => setData(response.data))
-      .catch(err => console.log(err));
-  }, [])
-
-  console.log(data);
-
   // Below is straight up just simple html
   return (
     <div>
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/views' element={<Views />} />
         <Route path='/about' element={<About />} />
       </Routes>
-      {/* {(
-        typeof data === 'undefined' ? (
-          <p>Loading...</p>
-        ) : (
-          data.map((element, i) => (
-            <div key={i}>
-              <p>{element.textvalue}</p>
-              <p >{element.numValue}</p>
-            </div>
-          ))
-        )
-      )} */}
     </div>
   )
 }

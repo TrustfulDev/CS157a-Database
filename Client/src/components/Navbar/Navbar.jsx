@@ -17,10 +17,10 @@ const Navbar = () => {
                     Home
                 </Link>
 
-                <Link to="/" className={ selected === 2 ? "nav-btns nav-selected" : "nav-btns"}
+                <Link to="/views" className={ selected === 2 ? "nav-btns nav-selected" : "nav-btns"}
                     onClick={() => setSelected(2)}
                 >
-                    Something
+                    Views
                 </Link>
 
                 <Link to="/about" className={ selected === 3 ? "nav-btns nav-selected" : "nav-btns"}

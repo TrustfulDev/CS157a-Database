@@ -16,9 +16,9 @@ const appearUp = {
 const About = () => {
     return (
         <motion.div className="about-container" variants={ appearUp } initial="initial" animate="animate">
-            <AboutCard pic={ Hasnain } name="Hasnain Mucklai" desc="Software Engineer" anim={ appearUp }/>
-            <AboutCard pic={ StevenVu } name="Steven Vu" desc="Full-Stack Software Engineer" anim={ appearUp }/>
-            <AboutCard pic={ TommyVu } name="Tommy Vu" desc="Computer Science" anim={ appearUp }/>
+            <AboutCard pic={ Hasnain } name="Hasnain Mucklai" desc="Software Engineer" anim={ appearUp } link="https://www.linkedin.com/in/hasnainmucklai/" />
+            <AboutCard pic={ StevenVu } name="Steven Vu" desc="Full-Stack Software Engineer" anim={ appearUp } link="https://www.linkedin.com/in/vu-steven/" />
+            <AboutCard pic={ TommyVu } name="Tommy Vu" desc="Computer Science" anim={ appearUp } link="https://www.linkedin.com/in/vu-tommy/" />
         </motion.div>
     );
 };
