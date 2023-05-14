@@ -93,7 +93,7 @@ const Home = () => {
                 </motion.section>
 
                 <form ref={formRef} className="home-form" onSubmit={handleSubmit}>
-                    <TableFilter text="Patients" id="Patients" value="Patients" handleCheck={handleCheck} />
+                    <TableFilter text="Patients + Medical Conditions" id="Patients" value="Patients" handleCheck={handleCheck} />
                     
                     <TableFilter text="Medical Staff" id="MedicalStaff" value="MedicalStaff" handleCheck={handleCheck} />
 
@@ -101,7 +101,7 @@ const Home = () => {
 
                     <TableFilter text="Equipment" id="MedicalEquipment" value="MedicalEquipment" handleCheck={handleCheck} />
 
-                    <TableFilter text="Prescription" id="Prescription" value="Prescription" handleCheck={handleCheck} />
+                    <TableFilter text="Prescription + Prescribed Medicine" id="Prescription" value="Prescription" handleCheck={handleCheck} />
 
                     <TableFilter text="Medicine" id="Medicine" value="Medicine" handleCheck={handleCheck} />
 
