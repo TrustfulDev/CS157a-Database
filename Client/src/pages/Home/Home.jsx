@@ -25,7 +25,7 @@ const Home = () => {
     }
 
     const getData = (tableName) => {
-        axios.get(`/api/${tableName}`)
+        axios.get(`https://cs157a-hospital.herokuapp.com/api/${tableName}`)
         .then(response => {
             setData(prevData => [...prevData, response.data]);
         })

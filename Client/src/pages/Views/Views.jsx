@@ -9,7 +9,7 @@ const Views = () => {
     const [selected, setSelected] = useState(0);
 
     const getData = (viewName) => {
-        axios.get(`/view/${viewName}`)
+        axios.get(`https://cs157a-hospital.herokuapp.com/view/${viewName}`)
         .then(response => { setData(response.data) })
         .catch(err => console.log(err));
     }

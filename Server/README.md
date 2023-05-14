@@ -17,3 +17,4 @@ The steps below are for you to run the server locally if needed.
 - mysql2
 - dotenv
 - nodemon -D
+- cors
