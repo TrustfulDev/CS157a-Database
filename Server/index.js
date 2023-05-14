@@ -5,9 +5,7 @@ import cors from 'cors';
 
 const app = express();
 
-app.use(cors({
-    origin: "https://cs-157a-database-g5p0xdwm5-trustfuldev.vercel.app/",
-}));
+app.use(cors());
 
 app.use("/api", apiRouter);
 app.use("/view", viewRouter);

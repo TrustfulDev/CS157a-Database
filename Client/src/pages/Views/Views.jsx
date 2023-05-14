@@ -40,14 +40,14 @@ const Views = () => {
                 
                 </motion.button>
                 <motion.button className={ selected === 2 ? "views-btns views-selected" : "views-btns"}
-                    onClick={() => handleClick("staff", 2)}
+                    onClick={() => handleClick("equipment", 2)}
                     anim={ appearDown }
                 >
                     Ward Equipment View
                 </motion.button>
                 
                 <motion.button className={ selected === 3 ? "views-btns views-selected" : "views-btns"}
-                    onClick={() => handleClick("equipment", 3)}
+                    onClick={() => handleClick("staff", 3)}
                     anim={ appearDown }
                 >
                     Staff Patients View
