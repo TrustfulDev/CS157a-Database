@@ -12,6 +12,8 @@
     background: linear-gradient(90deg, rgba(112,221,255,1) 0%, rgba(153,255,167,1) 50%, rgba(248,255,153,1) 100%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
 .nav-container nav {
