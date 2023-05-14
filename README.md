@@ -9,7 +9,7 @@ NOTE: ClearDB's free plan with Heroku does not allow us to use triggers. However
 
 ## Run Instructions
 Please check the corresponding README.md for each folder (Client, Server) if you are trying to run the code locally
-- Live Link: https://cs-157a-database-oidxsiqg0-trustfuldev.vercel.app/
+- Live Link: https://cs-157a-database-5tf6kt7q1-trustfuldev.vercel.app/
 
 ## Documentation
 You can find our video demo below
